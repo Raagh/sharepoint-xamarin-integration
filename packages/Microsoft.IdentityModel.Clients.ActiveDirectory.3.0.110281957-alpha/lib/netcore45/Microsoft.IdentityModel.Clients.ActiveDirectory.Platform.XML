@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.IdentityModel.Clients.ActiveDirectory.Platform</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTrace">
+            <summary>
+            This class enables/disables tracing. To enable tracing, set TraceLevel to any level other than None which is the default
+            </summary>
+        </member>
+        <member name="P:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTrace.Level">
+            <summary>
+            Sets/gets trace level. If set to None, it disables the logging.
+            </summary>
+        </member>
+        <member name="T:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel">
+            <summary>
+            Trace level for logging.
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.Critical">
+            <summary>
+            Critical
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.Error">
+            <summary>
+            Error
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.Warning">
+            <summary>
+            Warning
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.Informational">
+            <summary>
+            Informational
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.Verbose">
+            <summary>
+            Verbose
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.LogAlways">
+            <summary>
+            LogAlways
+            </summary>
+        </member>
+        <member name="T:Microsoft.IdentityModel.Clients.ActiveDirectory.StorageFileEventListener">
+            <summary>
+            Code used from http://code.msdn.microsoft.com/Logging-Sample-for-Windows-0b9dffd7
+            This is an advanced usage, where you want to intercept the logging messages and divert them somewhere
+            besides ETW.
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.StorageFileEventListener.storageFile">
+            <summary>
+            Storage file to be used to write logs
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.StorageFileEventListener.name">
+            <summary>
+            Name of the current event listener
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.StorageFileEventListener.format">
+            <summary>
+            The format to be used by logging.
+            </summary>
+        </member>
+        <member name="T:Microsoft.IdentityModel.Clients.ActiveDirectory.PromptBehavior">
+            <summary>
+            Indicates whether AcquireToken should automatically prompt only if necessary or whether
+            it should prompt regardless of whether there is a cached token.
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.PromptBehavior.Auto">
+            <summary>
+            Acquire token will prompt the user for credentials only when necessary.  If a token
+            that meets the requirements is already cached then the user will not be prompted.
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.PromptBehavior.Always">
+            <summary>
+            The user will be prompted for credentials even if there is a token that meets the requirements
+            already in the cache.
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.PromptBehavior.Never">
+            <summary>
+            The user will not be prompted for credentials.  If prompting is necessary then the AcquireToken request
+            will fail.
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.PromptBehavior.RefreshSession">
+            <summary>
+            Re-authorizes (through displaying webview) the resource usage, making sure that the resulting access
+            token contains updated claims. If user logon cookies are available, the user will not be asked for 
+            credentials again and the logon dialog will dismiss automatically.
+            </summary>
+        </member>
+        <member name="T:Microsoft.IdentityModel.Clients.ActiveDirectory.AuthorizationParameters">
+            <summary>
+            Additional parameters used in acquiring user's authorization
+            </summary>
+        </member>
+        <member name="P:Microsoft.IdentityModel.Clients.ActiveDirectory.AuthorizationParameters.UseCorporateNetwork">
+            <summary>
+            Gets or Sets flag to enable logged in user authentication. Note that enabling this flag requires some extra application capabilites.
+            This flag only works in SSO mode and is ignored otherwise.
+            </summary>
+        </member>
+        <member name="P:Microsoft.IdentityModel.Clients.ActiveDirectory.AuthorizationParameters.PromptBehavior">
+            <summary>
+            Gets prompt behavior. If <see cref="!:PromptBehavior.Always"/>, asks service to show user the authentication page which gives them chance to authenticate as a different user.
+            </summary>
+        </member>
+    </members>
+</doc>

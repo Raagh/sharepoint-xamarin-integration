@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.IdentityModel.Clients.ActiveDirectory.Platform</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTrace">
+            <summary>
+            This class enables/disables tracing. To enable tracing, set TraceLevel to any level other than None which is the default
+            </summary>
+        </member>
+        <member name="P:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTrace.Level">
+            <summary>
+            Sets/gets trace level. If set to None, it disables the logging.
+            </summary>
+        </member>
+        <member name="T:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel">
+            <summary>
+            Trace level for logging.
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.Critical">
+            <summary>
+            Critical
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.Error">
+            <summary>
+            Error
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.Warning">
+            <summary>
+            Warning
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.Informational">
+            <summary>
+            Informational
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.Verbose">
+            <summary>
+            Verbose
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.AdalTraceLevel.LogAlways">
+            <summary>
+            LogAlways
+            </summary>
+        </member>
+        <member name="T:Microsoft.IdentityModel.Clients.ActiveDirectory.StorageFileEventListener">
+            <summary>
+            Code used from http://code.msdn.microsoft.com/Logging-Sample-for-Windows-0b9dffd7
+            This is an advanced usage, where you want to intercept the logging messages and divert them somewhere
+            besides ETW.
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.StorageFileEventListener.storageFile">
+            <summary>
+            Storage file to be used to write logs
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.StorageFileEventListener.name">
+            <summary>
+            Name of the current event listener
+            </summary>
+        </member>
+        <member name="F:Microsoft.IdentityModel.Clients.ActiveDirectory.StorageFileEventListener.format">
+            <summary>
+            The format to be used by logging.
+            </summary>
+        </member>
+        <member name="T:Microsoft.IdentityModel.Clients.ActiveDirectory.AuthorizationParameters">
+            <summary>
+            Additional parameters used in acquiring user's authorization
+            </summary>
+        </member>
+    </members>
+</doc>
