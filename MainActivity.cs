@@ -88,15 +88,23 @@ namespace SPXamarin
             Button itemsButton = FindViewById<Button>(Resource.Id.ItemsButton);
             itemsButton.Click += async (sender, args) =>
             {
-                await AddListItem("TestItem", "https://cokeandcode.sharepoint.com/", App.authResult.AccessToken, App._file.AbsolutePath);
+                //await AddListItem("TestItem", "https://cokeandcode.sharepoint.com/", App.authResult.AccessToken, App._file.AbsolutePath);
+                await CreateItems(App.authResult.AccessToken);
             };
-            
+
+
+            Button listButton = FindViewById<Button>(Resource.Id.CreateListButton);
+            listButton.Click += async (sender, args) =>
+            {
+                await CreateList(App.authResult.AccessToken);
+            };
+
 
         }
 
         internal async void Login(object sender, EventArgs eventArgs)
         {
-            if(App.authResult == null)
+            if(App.authResult.AccessToken == null)
                 App.authResult = await AuthenticationHelper.GetAccessToken("https://cokeandcode.sharepoint.com/", this);
             else
                 Toast.MakeText(this, "Already logged in!", ToastLength.Long).Show();
@@ -152,90 +160,112 @@ namespace SPXamarin
             return formDigestValue;
         }
 
-        public async Task<string> AddListItem(string title, string siteURL, string accessToken, string filePath)
+        //public async Task<string> AddListItem(string title, string siteURL, string accessToken, string filePath)
+        //{
+        //    HttpClient client = new HttpClient();
+        //    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+        //    client.DefaultRequestHeaders.Add("Accept", "application/json;odata=verbose");
+
+        //    HttpRequestMessage request =
+        //        new HttpRequestMessage(HttpMethod.Post, requestUrl);
+
+
+        //    // Note that the form digest is not needed for bearer authentication.  This can
+        //    //safely be removed, but left here for posterity.   
+        //    //var formDigest = await GetFormDigest(siteURL, accessToken);         
+        //    //request.Headers.Add("X-RequestDigest", formDigest);
+
+        //    var requestContent = new StringContent(
+        //      "{ '__metadata': { 'type': 'SP.Data.TestListListItem' }, 'Title': '" + title + "'}");
+        //    requestContent.Headers.ContentType =
+        //       System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
+
+        //    request.Content = requestContent;
+
+        //    HttpResponseMessage response = await client.SendAsync(request);
+
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        string responseString = await response.Content.ReadAsStringAsync();
+        //        JsonObject d = (JsonObject)JsonValue.Parse(responseString);
+        //        JsonObject results = (JsonObject)d["d"];
+        //        JsonValue newItemId = (JsonValue)results["ID"];
+        //        var endpointUrl = string.Format("{0}({1})/AttachmentFiles/add(FileName='{2}')", requestUrl, newItemId.ToString(), App._file.Name);
+
+        //        using (var stream = System.IO.File.OpenRead(filePath))
+        //        {
+        //            HttpContent file = new StreamContent(stream);
+        //            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        //            var resp = await client.PostAsync(endpointUrl, file);
+        //        }
+        //        Toast.MakeText(this, "Picture Uploaded Succesfully!", ToastLength.Long).Show();
+        //        return responseString;
+        //    }
+
+        //    return (null);
+        //}
+
+
+        protected async Task<bool> CreateItems(string token)
         {
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var mediaType = new MediaTypeWithQualityHeaderValue("application/json");
             mediaType.Parameters.Add(new NameValueHeaderValue("odata", "verbose"));
             client.DefaultRequestHeaders.Accept.Add(mediaType);
 
             var itemToCreateTitle = "Item created on: " + DateTime.Now.ToString("dd/MM HH:mm");
-            var body = "{\"__metadata\":{\"type\":\"SP.Data.TestListListItem\"},\"Title\":\"" + itemToCreateTitle + "\",\"Status\": \"Not Started\"}";
+            var body = "{\"__metadata\":{\"type\":\"SP.Data.TasksByAndroidListItem\"},\"Title\":\"" + itemToCreateTitle + "\",\"Status\": \"Not Started\"}";
             var contents = new StringContent(body);
             contents.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json;odata=verbose");
 
             try
             {
-                var postResult = await client.PostAsync("https://cokeandcode.sharepoint.com/_api/web/lists/GetByTitle('TestList')/items", contents);
-                var response = postResult.EnsureSuccessStatusCode();
-                if (response.IsSuccessStatusCode)
+                var postResult = await client.PostAsync("https://cokeandcode.sharepoint.com/_api/web/lists/GetByTitle('TasksByAndroid')/items", contents);
+                var result = postResult.EnsureSuccessStatusCode();
+                if (result.IsSuccessStatusCode)
                 {
-                    string responseString = await response.Content.ReadAsStringAsync();
-                    JsonObject d = (JsonObject)JsonValue.Parse(responseString);
-                    JsonObject results = (JsonObject)d["d"];
-                    JsonValue newItemId = (JsonValue)results["ID"];
-                    var endpointUrl = string.Format("{0}({1})/AttachmentFiles/add(FileName='{2}')", requestUrl, newItemId.ToString(), App._file.Name);
-
-                    using (var stream = System.IO.File.OpenRead(filePath))
-                    {
-                        HttpContent file = new StreamContent(stream);
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                        var resp = await client.PostAsync(endpointUrl, file);
-                    }
-                    Toast.MakeText(this, "Picture Uploaded Succesfully!", ToastLength.Long).Show();
-                    return responseString;
+                    Toast.MakeText(this, "List item created successfully!", ToastLength.Long).Show();
+                    return true;
                 }
             }
             catch (Exception ex)
             {
                 var msg = "Unable to create list item. " + ex.Message;
                 Toast.MakeText(this, msg, ToastLength.Long).Show();
+                return false;
             }
 
-            //
+            return false;
+        }
 
-            //HttpClient client = new HttpClient();
-            //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
-            //client.DefaultRequestHeaders.Add("Accept", "application/json;odata=verbose");
+        protected async Task<bool> CreateList(string token)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            //HttpRequestMessage request =
-            //    new HttpRequestMessage(HttpMethod.Post, requestUrl);
+            var mediaType = new MediaTypeWithQualityHeaderValue("application/json");
+            mediaType.Parameters.Add(new NameValueHeaderValue("odata", "verbose"));
+            client.DefaultRequestHeaders.Accept.Add(mediaType);
 
+            var body = "{\"__metadata\":{\"type\":\"SP.List\"},\"AllowContentTypes\":true,\"BaseTemplate\":107,\"ContentTypesEnabled\":true,\"Description\":\"Tasks by Xamarin.Android\",\"Title\":\"TasksByAndroid\"}";
 
-            //// Note that the form digest is not needed for bearer authentication.  This can
-            ////safely be removed, but left here for posterity.   
-            ////var formDigest = await GetFormDigest(siteURL, accessToken);         
-            ////request.Headers.Add("X-RequestDigest", formDigest);
+            var contents = new StringContent(body);
+            contents.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json;odata=verbose");
 
-            //var requestContent = new StringContent(
-            //  "{ '__metadata': { 'type': 'SP.Data.TestListListItem' }, 'Title': '" + title + "'}");
-            //requestContent.Headers.ContentType =
-            //   System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata=verbose");
+            try
+            {
+                var postResult = await client.PostAsync("https://cokeandcode.sharepoint.com/_api/web/lists/", contents);
+                var result = postResult.EnsureSuccessStatusCode();
+                Toast.MakeText(this, "List created successfully!", ToastLength.Long).Show();
 
-            //request.Content = requestContent;
-
-            //HttpResponseMessage response = await client.SendAsync(request);
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    string responseString = await response.Content.ReadAsStringAsync();
-            //    JsonObject d = (JsonObject)JsonValue.Parse(responseString);
-            //    JsonObject results = (JsonObject)d["d"];
-            //    JsonValue newItemId = (JsonValue)results["ID"];
-            //    var endpointUrl = string.Format("{0}({1})/AttachmentFiles/add(FileName='{2}')", requestUrl, newItemId.ToString(), App._file.Name);
-
-            //    using (var stream = System.IO.File.OpenRead(filePath))
-            //    {
-            //        HttpContent file = new StreamContent(stream);
-            //        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            //        var resp = await client.PostAsync(endpointUrl, file);                  
-            //    }
-            //    Toast.MakeText(this, "Picture Uploaded Succesfully!", ToastLength.Long).Show();
-            //    return responseString;
-            //}
-
-            return (null);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(this, "List already exists!", ToastLength.Long).Show();
+                return false;
+            }
         }
     }
 }

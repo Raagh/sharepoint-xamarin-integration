@@ -7,21 +7,26 @@
         android:id="@+id/LoginButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:text="@string/login" />
+    <Button
+        android:id="@+id/CreateListButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/createList" />
     <Button
         android:id="@+id/CameraButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/openCamera" />
-    <Button
-        android:id="@+id/ItemsButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/uploadPhoto" />
     <ImageView
         android:id="@+id/CameraView"
         android:src="@android:drawable/ic_menu_gallery"
         android:layout_width="fill_parent"
         android:layout_height="300.0dp"
         android:adjustViewBounds="true" />
+    <Button
+        android:id="@+id/ItemsButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/uploadPhoto" />
 </LinearLayout>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="openCamera">Open Camera</string>
-    <string name="app_name">SPX Integration</string>
+  <string name="openCamera">Take Picture</string>
+  <string name="app_name">SPX Integration</string>
   <string name="uploadPhoto">Upload Picture</string>
+  <string name="createList">Create List</string>
+  <string name="login">Login</string>
 </resources>

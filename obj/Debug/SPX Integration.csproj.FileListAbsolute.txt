@@ -100,6 +100,7 @@ C:\Users\pferraggi\Documents\Visual Studio 2015\Projects\SPXamarin\bin\Debug\ko\
 C:\Users\pferraggi\Documents\Visual Studio 2015\Projects\SPXamarin\bin\Debug\ru\System.Spatial.resources.dll
 C:\Users\pferraggi\Documents\Visual Studio 2015\Projects\SPXamarin\bin\Debug\zh-Hans\System.Spatial.resources.dll
 C:\Users\pferraggi\Documents\Visual Studio 2015\Projects\SPXamarin\bin\Debug\zh-Hant\System.Spatial.resources.dll
+C:\Users\pferraggi\Documents\Visual Studio 2015\Projects\SPXamarin\obj\Debug\SPX Integration.csprojResolveAssemblyReference.cache
 C:\Users\pferraggi\Documents\Visual Studio 2015\Projects\SPXamarin\obj\Debug\SPXamarin.dll
 C:\Users\pferraggi\Documents\Visual Studio 2015\Projects\SPXamarin\obj\Debug\SPXamarin.pdb
 C:\Users\pferraggi\Documents\Visual Studio 2015\Projects\SPXamarin\obj\Debug\android\bin\CokeAndCode.SPXamarin.apk
