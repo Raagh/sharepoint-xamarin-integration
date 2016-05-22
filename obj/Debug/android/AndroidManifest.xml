@@ -22,5 +22,5 @@
     </receiver>
   </application>
   <!--suppress UsesMinSdkAttributes-->
-  <uses-sdk android:minSdkVersion="11" />
+  <uses-sdk android:minSdkVersion="19" />
 </manifest>
