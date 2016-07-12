@@ -31,6 +31,7 @@ namespace SPXamarin
        
         private ImageView _imageView;
 
+        #region Android Events
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
@@ -102,31 +103,15 @@ namespace SPXamarin
 
         }
 
+        #endregion
+
+        #region Custom Events
         internal async void Login(object sender, EventArgs eventArgs)
         {
-            if(App.authResult == null)
+            if (App.authResult == null)
                 App.authResult = await AuthenticationHelper.GetAccessToken("https://cokeandcode.sharepoint.com/", this);
             else
                 Toast.MakeText(this, "Already logged in!", ToastLength.Long).Show();
-        }
-
-        private void CreateDirectoryForPictures()
-        {
-            App._dir = new Java.IO.File(
-                Environment.GetExternalStoragePublicDirectory(
-                    Environment.DirectoryPictures), "SPXIntegration");
-            if (!App._dir.Exists())
-            {
-                App._dir.Mkdirs();
-            }
-        }
-
-        private bool IsThereAnAppToTakePictures()
-        {
-            Intent intent = new Intent(MediaStore.ActionImageCapture);
-            IList<ResolveInfo> availableActivities = 
-                PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
-            return availableActivities != null && availableActivities.Count > 0;
         }
 
         private void TakeAPicture(object sender, EventArgs eventArgs)
@@ -141,26 +126,7 @@ namespace SPXamarin
             StartActivityForResult(intent, 0);
         }
 
-        private static async Task<string> GetFormDigest(string siteURL, string accessToken)
-        {
-            //Get the form digest value in order to write data
-            HttpClient client = new HttpClient();
-            HttpRequestMessage request = new HttpRequestMessage(
-                  HttpMethod.Post, siteURL + "/_api/contextinfo");
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            HttpResponseMessage response = await client.SendAsync(request);
-
-            string responseString = await response.Content.ReadAsStringAsync();
-
-            XNamespace d = "http://schemas.microsoft.com/ado/2007/08/dataservices";
-            var root = XElement.Parse(responseString);
-            var formDigestValue = root.Element(d + "FormDigestValue").Value;
-
-            return formDigestValue;
-        }
-
-        protected async Task<bool> CreateItem(string token)
+        protected async Task<bool> CreateTask(string token)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
@@ -222,6 +188,14 @@ namespace SPXamarin
             }
         }
 
+        /// <summary>
+        /// Creates Item on target list and attachs picture take with TakeAPicture method
+        /// </summary>
+        /// <param name="title">Item title</param>
+        /// <param name="siteURL">SharePoint site url</param>
+        /// <param name="accessToken">Token from succesful authentication</param>
+        /// <param name="filePath">Picture path</param>
+        /// <returns></returns>
         public async Task<string> CreateItemWithPicture(string title, string siteURL, string accessToken, string filePath)
         {
             string requestUrl = siteURL + "_api/Web/Lists/GetByTitle('SPXPictures')/Items";
@@ -269,6 +243,52 @@ namespace SPXamarin
 
             return (null);
         }
+
+        #endregion
+
+        #region Auxiliar Methods
+
+        private void CreateDirectoryForPictures()
+        {
+            App._dir = new Java.IO.File(
+                Environment.GetExternalStoragePublicDirectory(
+                    Environment.DirectoryPictures), "SPXIntegration");
+            if (!App._dir.Exists())
+            {
+                App._dir.Mkdirs();
+            }
+        }
+
+        private bool IsThereAnAppToTakePictures()
+        {
+            Intent intent = new Intent(MediaStore.ActionImageCapture);
+            IList<ResolveInfo> availableActivities =
+                PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
+            return availableActivities != null && availableActivities.Count > 0;
+        }
+
+
+        private static async Task<string> GetFormDigest(string siteURL, string accessToken)
+        {
+            //Get the form digest value in order to write data
+            HttpClient client = new HttpClient();
+            HttpRequestMessage request = new HttpRequestMessage(
+                  HttpMethod.Post, siteURL + "/_api/contextinfo");
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            HttpResponseMessage response = await client.SendAsync(request);
+
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            XNamespace d = "http://schemas.microsoft.com/ado/2007/08/dataservices";
+            var root = XElement.Parse(responseString);
+            var formDigestValue = root.Element(d + "FormDigestValue").Value;
+
+            return formDigestValue;
+        }
+
+        #endregion
+
 
     }
 }
